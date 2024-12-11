@@ -10,14 +10,6 @@ type: software
 authors:
   - name: Evert Nasedkin
 
-repository-code: 'https://gitlab.com/mauricemolli/petitRADTRANS'
-url: 'https://petitradtrans.readthedocs.io/en/latest/'
-repository: 'https://keeper.mpdl.mpg.de/d/ccf25082fda448c8a0d0/'
-repository-artifact: 'https://pypi.org/project/petitRADTRANS/'
-abstract: >-
-  petitRADTRANS is an easy-to-use code for the calculation
-  of exoplanet spectra. petitRADTRANS allows the calculation
-  of emission or transmission spectra, at low or high
-  resolution, clear or cloudy, and includes a retrieval
-  module to fit a petitRADTRANS model to your spectral data.
+repository-code: 'https://github.com/nenasedk/radiation_unit_conversion/tree/main'
+
 license: MIT

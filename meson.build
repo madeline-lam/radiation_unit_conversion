@@ -19,4 +19,4 @@ py = py_mod.find_installation(pure: false)
 py_dep = py.dependency()
 
 # Install python sources
-subdir('petitRADTRANS')
+subdir('radiation_unit_conversion')

@@ -18,13 +18,12 @@ authors = [
 readme = "README.rst"
 license = {file = "LICENSE"}
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
     "Environment :: Console",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Fortran",
     "Programming Language :: Python :: 3",
     "Topic :: Scientific/Engineering :: Astronomy"
 ]
@@ -32,20 +31,20 @@ dependencies = [
     "meson-python",
     "ninja",
     "numpy",
+    "astropy",
+    "unittest"
 ]
 
 [project.urls]
-Documentation = "https://petitradtrans.readthedocs.io/en/latest/"
-Repository = "https://gitlab.com/mauricemolli/petitRADTRANS"
-Issues = "https://gitlab.com/mauricemolli/petitRADTRANS/-/issues"
-Changelog = "https://gitlab.com/mauricemolli/petitRADTRANS/-/blob/master/CHANGELOG.md"
+Repository = "https://github.com/nenasedk/radiation_unit_conversion/tree/main"
+Issues = "https://github.com/nenasedk/radiation_unit_conversion/issues"
+Changelog = "https://github.com/nenasedk/radiation_unit_conversion/blob/main/CHANGELOG.md"
 
 test = [
     "build",
     "wheel",
     "pytest",
     "pytest-cov",
-    "mpi4py",
 ]
 
 [tool.flake8]
@@ -55,8 +54,7 @@ max-line-length = 120
 norecursedirs = [
     ".tox",
     "build",
-    "petitRADTRANS",
-    "testing",
+    "radiation_unit_conversion",
 ]
 
 #[tool.tox]  # TODO add when tox fully supports toml, for now setup is in setup.cfg
