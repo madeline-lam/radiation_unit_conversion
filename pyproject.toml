@@ -48,6 +48,7 @@ test = [
     "wheel",
     "pytest",
     "pytest-cov",
+    "numpy",
 ]
 
 [tool.flake8]
