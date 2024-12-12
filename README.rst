@@ -24,7 +24,7 @@ Without using astropy units::
   import radiation_unit_conversion.units as units
 
   flambda_spectrum = np.linspace(1,10,10) # W/m^2/micron
-  wavelength = np.linspace(1,5,10) # 
+  wavelength = np.linspace(1,5,10) # micron
   fnu_spectrum = units.watt_metersquared_micron2jansky(flambda_spectrum, wavelength)
 
 License
