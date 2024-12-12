@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-import units as units
+import .units as units
 
 test_flux = np.linspace(1, 10, 10)
 test_wavelength = np.linspace(1, 5, 10)
