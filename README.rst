@@ -10,5 +10,5 @@ License
 =======
 Copyright 2024 Evert Nasedkin
 
-radiation_unit_transfer is available under the MIT license.
+radiation_unit_conversion is available under the MIT license.
 See the LICENSE file for more information.
