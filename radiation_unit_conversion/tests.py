@@ -1,6 +1,5 @@
 import unittest
 import numpy as np
-import astropy.units as u
 import units as units
 
 test_flux = np.linspace(1, 10, 10)

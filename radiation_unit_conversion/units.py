@@ -12,7 +12,6 @@ import astropy.constants as cst
 import astropy.units as u
 
 
-
 def fnu2flambda(input_flux, input_wavelength, output_units):
     """
     Converts flux from the f_nu (flux per unit frequency) form to the f_lambda
@@ -63,7 +62,7 @@ def fnu2flambda(input_flux, input_wavelength, output_units):
 
 def flambda2fnu(input_flux, input_wavelength, output_units):
     """
-    Converts flux from the f_lambda (flux per unit wavelength) form to the f_nu 
+    Converts flux from the f_lambda (flux per unit wavelength) form to the f_nu
     (flux per unit frequency) form.
 
     Parameters:
