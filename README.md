@@ -1,6 +1,4 @@
-==========================
-radiation_unit_conversion
-==========================
+# radiation_unit_conversion
 
 **An easy-to-use Python package for converting between different radiation units**
 
