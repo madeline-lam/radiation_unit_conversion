@@ -8,16 +8,18 @@ Implementing the `STScI units page <https://www.stsci.edu/~strolger/docs/UNITS.t
 
 Example
 =======
-Using astropy units: ::
+Using astropy units::
+
   import numpy as np
   import astropy.units as u
   import radiation_unit_conversion.units as units
-
+  
   flambda_spectrum = np.linspace(1,10,10) * u.W/u.m**2/u.micron
   wavelength = np.linspace(1,5,10) * u.micron
   fnu_spectrum = units.flambda2fnu(flambda_spectrum, wavelength, u.Jy)
 
-Without using astropy units: ::
+Without using astropy units::
+
   import numpy as np
   import radiation_unit_conversion.units as units
 
