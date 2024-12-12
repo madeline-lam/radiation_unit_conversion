@@ -59,14 +59,6 @@ def fnu2flambda(input_flux, input_wavelength, output_units):
 
     return output
 
-def wavelength2frequency(input_wavelength, output_units):
-    input_wavelength.to(u.m)
-    return (cst.c/input_wavelength).to(output_units)
-
-def frequency2wavelength(input_frequency, output_units):
-    input_frequency.to(u.m)
-    return (cst.c/input_frequency).to(output_units)
-
 def flambda2fnu(input_flux, input_wavelength, output_units):
     """
     Converts flux from the f_lambda (flux per unit wavelength) form to the f_nu 
@@ -113,6 +105,14 @@ def flambda2fnu(input_flux, input_wavelength, output_units):
     output = output.to(output_units)
 
     return output
+
+def wavelength2frequency(input_wavelength, output_units):
+    input_wavelength.to(u.m)
+    return (cst.c/input_wavelength).to(output_units)
+
+def frequency2wavelength(input_frequency, output_units):
+    input_frequency.to(u.m)
+    return (cst.c/input_frequency).to(output_units)
 
 ## STScI direct conversion functions
 def watt_metersquared2erg_cmsquared_second(input_flux):
