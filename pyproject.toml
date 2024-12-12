@@ -41,6 +41,7 @@ Repository = "https://github.com/nenasedk/radiation_unit_conversion/tree/main"
 Issues = "https://github.com/nenasedk/radiation_unit_conversion/issues"
 Changelog = "https://github.com/nenasedk/radiation_unit_conversion/blob/main/CHANGELOG.md"
 
+[project.optional-dependencies]
 test = [
     "build",
     "wheel",
