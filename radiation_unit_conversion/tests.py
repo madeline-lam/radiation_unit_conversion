@@ -1,9 +1,11 @@
 import unittest
 import numpy as np
-import .units as units
+import astropy.units as u
+import radiation_unit_conversion.units as units
 
 test_flux = np.linspace(1, 10, 10)
 test_wavelength = np.linspace(1, 5, 10)
+
 
 class TestUnitsConversions(unittest.TestCase):
 
@@ -169,7 +171,7 @@ class TestUnitsConversions(unittest.TestCase):
             1.30011125e+14,
             1.19916983e+14]
         )
-        result = units.jansky2watt_metersquared_micron(self.test_flux, self.test_wavelength)
+        result = units.flambda2fnu(self.test_flux * u.W /u.m**2 / u.micron, self.test_wavelength * u.micron,  u.W /u.m**2 / u.Hz)
         np.testing.assert_allclose(result.value, expected_output, rtol=1e-6)
 
 
