@@ -12,14 +12,13 @@ class TestUnitsConversions(unittest.TestCase):
     def setUp(self):
         """Set up test data"""
         self.test_flux = np.linspace(1, 10, 10)  # Array of flux values from 1 to 10 W/m^2
-
+        self.test_wavelength = np.linspace(1, 5, 10)  # Array of wavelength values from 1 to 5 micron
 
     def test_watt_metersquared2erg_cmsquared_second(self):
         """Test conversion from W/m^2 to erg/cm^2/s"""
         expected_output = self.test_flux * 1000  # erg/cm^2/s
         result = units.watt_metersquared2erg_cmsquared_second(self.test_flux)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_erg_cmsquared_second2watt_metersquared(self):
         """Test conversion from erg/cm^2/s to W/m^2"""
@@ -28,20 +27,17 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.erg_cmsquared_second2watt_metersquared(test_flux_erg)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_round_trip_conversion(self):
         """Test that a round-trip conversion returns the original values."""
         intermediate_flux = units.watt_metersquared2erg_cmsquared_second(self.test_flux)
         final_flux = units.erg_cmsquared_second2watt_metersquared(intermediate_flux)
         np.testing.assert_allclose(self.test_flux, final_flux, rtol=1e-6)
 
-
     def test_watt_metersquared_hertz2erg_cmsquared_second_hertz(self):
         """Test conversion from W/m^2/Hz to erg/cm^2/s/Hz"""
         expected_output = self.test_flux * 1000
         result = units.watt_metersquared_hertz2erg_cmsquared_second_hertz(self.test_flux)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_erg_cmsquared_secondhertz2watt_metersquaredhertz(self):
         """Test conversion from erg/cm^2/s/Hz to W/m^2/Hz"""
@@ -50,14 +46,12 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.erg_cmsquared_secondhertz2watt_metersquaredhertz(test_flux_erg)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_watt_metersquared_hertz2erg_cmsquared_second_angstrom(self):
         """Test conversion from W/m^2/Hz to erg/cm^2/s/\u00c5ngström"""
         constant = 2.99792458e21
         expected_output = constant * self.test_flux / self.test_wavelength**2
         result = units.watt_metersquared_hertz2erg_cmsquared_second_angstrom(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_erg_cmsquared_second_angstrom2watt_metersquared_hertz(self):
         """Test conversion from erg/cm^2/s/\u00c5ngström to W/m^2/Hz"""
@@ -67,14 +61,12 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.erg_cmsquared_second_angstrom2watt_metersquared_hertz(test_flux_erg, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_watt_metersquared_micron2watt_metersquared_hertz(self):
         """Test conversion from W/m^2/\u03bcm to W/m^2/Hz"""
         constant = 2.99792458e14
         expected_output = constant * self.test_flux / self.test_wavelength**2
         result = units.watt_metersquared_micron2watt_metersquared_hertz(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_watt_metersquared_hertz2watt_metersquared_micron(self):
         """Test conversion from W/m^2/Hz to W/m^2/\u03bcm"""
@@ -84,14 +76,12 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.watt_metersquared_hertz2watt_metersquared_micron(test_flux_hz, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_photon_cmsquared_second_micron2watt_metersquared_micron(self):
         """Test conversion from photon/cm^2/s/μm to W/m^2/μm"""
         constant = 5.03411250e14
         expected_output = self.test_flux / self.test_wavelength / constant
         result = units.photon_cmsquared_second_micron2watt_metersquared_micron(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_erg_cmsquared_second_angstrom2photon_cmsquared_second_angstrom(self):
         """Test conversion from erg/cm^2/s/Ångström to photon/cm^2/s/Ångström"""
@@ -100,7 +90,6 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.erg_cmsquared_second_angstrom2photon_cmsquared_second_angstrom(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_photon_cmsquared_second_angstrom2erg_cmsquared_second_angstrom(self):
         """Test conversion from photon/cm^2/s/Ångström to erg/cm^2/s/Ångström"""
         constant = 5.03411250E+07
@@ -108,14 +97,12 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.photon_cmsquared_second_angstrom2erg_cmsquared_second_angstrom(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_watt_metersquared_hertz2jansky(self):
         """Test conversion from W/m^2/Hz to Jansky"""
         constant = 1e26
         expected_output = self.test_flux * constant
         result = units.watt_metersquared_hertz2jansky(self.test_flux)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_jansky2watt_metersquared_hertz(self):
         """Test conversion from Jansky to W/m^2/Hz"""
@@ -125,14 +112,12 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.jansky2watt_metersquared_hertz(test_flux_jansky)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_erg_cmsquared_second_hertz2jansky(self):
         """Test conversion from erg/cm^2/s/Hz to Jansky"""
         constant = 1e23
         expected_output = self.test_flux * constant
         result = units.erg_cmsquared_second_hertz2jansky(self.test_flux)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_jansky2erg_cmsquared_second_hertz(self):
         """Test conversion from Jansky to erg/cm^2/s/Hz"""
@@ -142,14 +127,12 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.jansky2erg_cmsquared_second_hertz(test_flux_jansky)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_erg_cmsquared_second_angstrom2jansky(self):
         """Test conversion from erg/cm^2/s/Ångström to Jansky"""
         constant = 3.33564095e04
         expected_output = constant * self.test_flux * self.test_wavelength**2
         result = units.erg_cmsquared_second_angstrom2jansky(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_jansky2erg_cmsquared_second_angstrom(self):
         """Test conversion from Jansky to erg/cm^2/s/Ångström"""
@@ -159,7 +142,6 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.jansky2erg_cmsquared_second_angstrom(test_flux_jansky, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_watt_metersquared_micron2jansky(self):
         """Test conversion from W/m^2/μm to Jansky"""
         constant = 3.33564095e04
@@ -167,14 +149,12 @@ class TestUnitsConversions(unittest.TestCase):
         result = units.watt_metersquared_micron2jansky(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
-
     def test_jansky2watt_metersquared_micron(self):
         """Test conversion from Jansky to W/m^2/μm"""
         fnu = units.watt_metersquared_micron2watt_metersquared_hertz(self.test_flux, self.test_wavelength)
         expected_output = units.watt_metersquared_hertz2jansky(fnu)
         result = units.jansky2watt_metersquared_micron(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
-
 
     def test_flambda2fnu(self):
         """Test conversion from Jansky to W/m^2/μm"""
