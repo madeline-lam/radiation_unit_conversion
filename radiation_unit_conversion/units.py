@@ -49,7 +49,7 @@ def fnu2flambda(input_flux, input_wavelength, output_units):
     constant = cst.c.to(u.micron/u.second)
 
     # Convert the flux from f_nu to f_lambda using the formula
-    output = input_converted.value * wlen_converted.value**2 / constant.value
+    output = constant.value * input_converted.value * wlen_converted.value**2
 
     # Multiply by the appropriate units for flux per wavelength
     output *= u.W / u.m**2 / u.micron
@@ -97,7 +97,7 @@ def flambda2fnu(input_flux, input_wavelength, output_units):
     constant = cst.c.to(u.micron / u.second)
 
     # Convert the flux from f_lambda to f_nu using the formula
-    output = constant.value * input_converted.value / wlen_converted.value**2
+    output = input_converted.value * wlen_converted.value**2 / constant.value
 
     # Multiply by the appropriate units for flux per frequency
     output *= u.W / u.m**2 / u.Hz
