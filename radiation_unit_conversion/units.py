@@ -84,7 +84,7 @@ def flambda2fnu(input_flux, input_wavelength, output_units):
     Notes:
     ------
     The conversion from f_lambda to f_nu uses the relationship:
-        f_nu = c * f_lambda / lambda^2
+        f_lambda = f_nu * lambda^2 / c
     where `lambda` is the wavelength and `c` is the speed of light.
     """
     # Convert input flux to W/m^2/micron
@@ -151,12 +151,11 @@ def erg_cmsquared_second_angstrom2watt_metersquared_hertz(input_flux, input_wave
 def watt_metersquared_micron2watt_metersquared_hertz(input_flux, input_wavelength):
     # [Y W/m^2/um] = 2.99792458E+14 * [X1 W/m^2/Hz] / [X2 um]^2
     constant = 2.99792458e14
-    return constant * input_flux / input_wavelength**2
-
+    return input_flux * input_wavelength**2 / constant
 
 def watt_metersquared_hertz2watt_metersquared_micron(input_flux, input_wavelength):
     constant = 2.99792458e14
-    return input_flux*input_wavelength**2 / constant
+    return constant * input_flux/input_wavelength**2 
 
 
 def erg_cmsquared_hertz2photon_cmsquared_second_micron(input_flux, input_wavelength):
@@ -228,7 +227,7 @@ def jansky2erg_cmsquared_second_angstrom(input_flux, input_wavelength):
 def watt_metersquared_micron2jansky(input_flux, input_wavelength):
     # [Y erg/cm^2/s/A] = 2.99792458E-05 * [X1 Jy] / [X2 A]^2
     constant = 3.33564095e4
-    return constant * input_flux * input_wavelength**2
+    return  input_flux * input_wavelength**2 / constant
 
 
 def jansky2watt_metersquared_micron(input_flux, input_wavelength):
