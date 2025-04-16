@@ -56,16 +56,16 @@ class TestUnitsConversions(unittest.TestCase):
 
     def test_erg_cmsquared_second_angstrom2watt_metersquared_hertz(self):
         """Test conversion from erg/cm^2/s/\u00c5ngström to W/m^2/Hz"""
+        test_flux_erg = self.test_flux * 1000
         constant = 2.99792458e21
-        test_flux_erg = constant * self.test_flux / self.test_wavelength**2
-        expected_output = self.test_flux
+        expected_output =  test_flux_erg * self.test_wavelength**2 / constant
         result = units.erg_cmsquared_second_angstrom2watt_metersquared_hertz(test_flux_erg, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
     def test_watt_metersquared_micron2watt_metersquared_hertz(self):
         """Test conversion from W/m^2/\u03bcm to W/m^2/Hz"""
         constant = 2.99792458e14
-        expected_output = constant * self.test_flux / self.test_wavelength**2
+        expected_output = self.test_flux * self.test_wavelength**2 / constant
         result = units.watt_metersquared_micron2watt_metersquared_hertz(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
@@ -146,7 +146,7 @@ class TestUnitsConversions(unittest.TestCase):
     def test_watt_metersquared_micron2jansky(self):
         """Test conversion from W/m^2/μm to Jansky"""
         constant = 3.33564095e04
-        expected_output = constant * self.test_flux * self.test_wavelength**2
+        expected_output = self.test_flux * self.test_wavelength**2 / constant
         result = units.watt_metersquared_micron2jansky(self.test_flux, self.test_wavelength)
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
@@ -158,21 +158,22 @@ class TestUnitsConversions(unittest.TestCase):
         np.testing.assert_allclose(result, expected_output, rtol=1e-6)
 
     def test_flambda2fnu(self):
-        """Test conversion from Jansky to W/m^2/μm"""
-        expected_output = np.array([
-            2.99792458e+14,
-            2.87375019e+14,
-            2.52074627e+14,
-            2.20255683e+14,
-            1.94265513e+14,
-            1.73245107e+14,
-            1.56090288e+14,
-            1.41903223e+14,
-            1.30011125e+14,
-            1.19916983e+14]
-        )
-        result = units.flambda2fnu(self.test_flux * u.W /u.m**2 / u.micron, self.test_wavelength * u.micron,  u.W /u.m**2 / u.Hz)
+        """Test conversion from W/m^2/μm to Jansky"""
+        constant = 3.33564095e04
+        expected_output = self.test_flux * self.test_wavelength**2 / constant
+        result = units.flambda2fnu(self.test_flux * u.W / u.m**2 / u.micron,
+                                   self.test_wavelength * u.micron,
+                                   u.W / u.m**2 / u.Hz)
         np.testing.assert_allclose(result.value, expected_output, rtol=1e-6)
+
+    def test_fnu2flambda(self):
+        """Test conversion from Jansky to W/m^2/μm """
+        constant = 3.33564095e04
+        expected_output = constant * self.test_flux / self.test_wavelength**2
+        result = units.fnu2flambda(expected_output * u.Jy,
+                                   self.test_wavelength * u.micron,
+                                   u.W / u.m**2 / u.micron)
+        np.testing.assert_allclose(result.value, self.test_flux, rtol=1e-6)
 
 
 if __name__ == "__main__":
