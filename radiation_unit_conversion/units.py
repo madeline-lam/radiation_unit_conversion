@@ -215,18 +215,18 @@ def jansky2erg_cmsquared_second_hertz(input_flux):
 
 def erg_cmsquared_second_angstrom2jansky(input_flux, input_wavelength):
     # [Y Jy] = 3.33564095E+04 * [X1 erg/cm^2/s/A] * [X2 A]^2
-    constant = 3.33564095e4
+    constant = 1e23/2.99792458e14 #3.33564095e4
     return constant * input_flux * input_wavelength**2
 
 
 def jansky2erg_cmsquared_second_angstrom(input_flux, input_wavelength):
-    constant = 3.33564095e4
+    constant = 1e23/2.99792458e14
     return input_flux / input_wavelength**2 / constant
 
 
 def watt_metersquared_micron2jansky(input_flux, input_wavelength):
     # [Y erg/cm^2/s/A] = 2.99792458E-05 * [X1 Jy] / [X2 A]^2
-    constant = 3.33564095e4
+    constant = 1e26/2.99792458e14
     return  input_flux * input_wavelength**2 / constant
 
 
