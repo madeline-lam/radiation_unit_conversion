@@ -159,7 +159,7 @@ class TestUnitsConversions(unittest.TestCase):
 
     def test_flambda2fnu(self):
         """Test conversion from W/m^2/μm to Jansky"""
-        constant = 3.33564095e04
+        constant = 1e26/2.99792458e14
         expected_output = self.test_flux * self.test_wavelength**2 / constant
         result = units.flambda2fnu(self.test_flux * u.W / u.m**2 / u.micron,
                                    self.test_wavelength * u.micron,
@@ -168,8 +168,8 @@ class TestUnitsConversions(unittest.TestCase):
 
     def test_fnu2flambda(self):
         """Test conversion from Jansky to W/m^2/μm """
-        constant = 3.33564095e04
-        fnu = self.test_flux * self.test_wavelength**2 /constant
+        constant = 1e26/2.99792458e14
+        fnu = self.test_flux * self.test_wavelength**2 / constant
         result = units.fnu2flambda(fnu * u.Jy,
                                    self.test_wavelength * u.micron,
                                    u.W / u.m**2 / u.micron)

@@ -493,7 +493,7 @@ def erg_cmsquared_second_angstrom2jansky(input_flux, input_wavelength):
         The converted flux in units Jy.
     """
     # [Y Jy] = 3.33564095E+04 * [X1 erg/cm^2/s/A] * [X2 A]^2
-    constant = 3.33564095e4
+    constant = 1e23/2.99792458e14 #3.33564095e4
     return constant * input_flux * input_wavelength**2
 
 
