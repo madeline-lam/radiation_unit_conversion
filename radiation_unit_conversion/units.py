@@ -49,7 +49,7 @@ def fnu2flambda(input_flux, input_wavelength, output_units):
     constant = cst.c.to(u.micron/u.second)
 
     # Convert the flux from f_nu to f_lambda using the formula
-    output = constant.value * input_converted.value / wlen_converted.value**2
+    output = constant.value * input_converted.value * wlen_converted.value**2
 
     # Multiply by the appropriate units for flux per wavelength
     output *= u.W / u.m**2 / u.micron
@@ -84,7 +84,7 @@ def flambda2fnu(input_flux, input_wavelength, output_units):
     Notes:
     ------
     The conversion from f_lambda to f_nu uses the relationship:
-        f_lambda = f_nu * lambda^2 / c
+        f_nu = c * f_lambda / lambda^2
     where `lambda` is the wavelength and `c` is the speed of light.
     """
     # Convert input flux to W/m^2/micron
@@ -120,160 +120,596 @@ def frequency2wavelength(input_frequency, output_units):
 
 # STScI direct conversion functions
 def watt_metersquared2erg_cmsquared_second(input_flux):
+    """
+    Converts flux from the W/m^2 form to the erg/cm^2/s form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units erg/cm^2/s.
+    """
     # [Y erg/cm^2/s] = 1000 * [X W/m^2]
     return 1000 * input_flux
 
 
 def erg_cmsquared_second2watt_metersquared(input_flux):
+    """
+    Converts flux from the erg/cm^2/s form to the W/m^2 form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of erg/cm^2/s.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2.
+    """
     return input_flux / 1000
 
 
 def watt_metersquared_hertz2erg_cmsquared_second_hertz(input_flux):
+    """
+    Converts flux from the W/m^2/Hz form to the erg/cm^2/s/Hz form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2/Hz.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units erg/cm^2/s/Hz.
+    """
     # [Y erg/cm^2/s/Hz] = 1000 * [X W/m^2/Hz]
     return 1000 * input_flux
 
 
 def erg_cmsquared_secondhertz2watt_metersquaredhertz(input_flux):
+    """
+    Converts flux from the erg/cm^2/s/Hz form to the W/m^2/Hz form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of erg/cm^2/s/Hz.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2/Hz.
+    """
     return input_flux / 1000
 
 
 def watt_metersquared_hertz2erg_cmsquared_second_angstrom(input_flux, input_wavelength):
     # [Y erg/cm^2/s/A] = 2.99792458E+21 * [X1 W/m^2/Hz] / [X2 A]^2
+    """
+    Converts flux from the W/m^2/Hz form to the erg/cm^2/s/A form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2/Hz.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstroms.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units erg/cm^2/s/A.
+    """
     constant = 2.99792458e21
     return constant * input_flux / input_wavelength**2
 
 
 def erg_cmsquared_second_angstrom2watt_metersquared_hertz(input_flux, input_wavelength):
+    """
+    Converts flux from the erg/cm^2/s/A form to the W/m^2/Hz form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of erg/cm^2/s/A.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstroms.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2/Hz.
+    """
     constant = 2.99792458e21
     return input_flux * input_wavelength**2 / constant
 
+def watt_metersquared_hertz2watt_metersquared_micron(input_flux, input_wavelength):
+    """
+    Converts flux from the W/m^2/Hz form to the W/m^2/um form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2/Hz.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2/um.
+    """
+    constant = 2.99792458e14
+    return constant * input_flux/input_wavelength**2
 
 def watt_metersquared_micron2watt_metersquared_hertz(input_flux, input_wavelength):
+    """
+    Converts flux from the W/m^2/um form to the W/m^2/Hz form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2/um.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2/Hz.
+    """
     # [Y W/m^2/um] = 2.99792458E+14 * [X1 W/m^2/Hz] / [X2 um]^2
     constant = 2.99792458e14
     return input_flux * input_wavelength**2 / constant
 
-def watt_metersquared_hertz2watt_metersquared_micron(input_flux, input_wavelength):
-    constant = 2.99792458e14
-    return constant * input_flux/input_wavelength**2 
-
-
 def erg_cmsquared_hertz2photon_cmsquared_second_micron(input_flux, input_wavelength):
+    """
+    Converts flux from the erg/cm^2/Hz form to the photon/cm^2/s/um form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of erg/cm^2/Hz.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units photon/cm^2/s/um.
+    """
     # [Y photon/cm^2/s/um] = 1.50918896E+22 * [X1 erg/cm^2/Hz] / [X2 um]
     constant = 1.50918896e22
     return constant * input_flux/input_wavelength
 
 
 def photon_cmsquared_second_micron2erg_cmsquared_hertz(input_flux, input_wavelength):
+    """
+    Converts flux from the photon/cm^2/s/um form to the erg/cm^2/Hz form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of photon/cm^2/s/um.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units erg/cm^2/Hz.
+    """
     constant = 1.50918896e22
     return input_flux * input_wavelength / constant
 
 
 def watt_metersquared_micron2photon_cmsquared_second_micron(input_flux, input_wavelength):
+    """
+    Converts flux from the W/m^2/um form to the photon/cm^2/s/um form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2/um.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units photon/cm^2/s/um.
+    """
     # [Y photon/cm^2/s/um] = 5.03411250E+14 * [X1 W/m^2/um] * [X2 um]
     constant = 5.03411250e14
     return constant * input_flux * input_wavelength
 
 
 def photon_cmsquared_second_micron2watt_metersquared_micron(input_flux, input_wavelength):
+    """
+    Converts flux from the photon/cm^2/s/um form to the W/m^2/um form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of photon/cm^2/s/um.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2/um.
+    """
     constant = 5.03411250e14
     return input_flux / input_wavelength / constant
 
 
 def erg_cmsquared_second_angstrom2photon_cmsquared_second_angstrom(input_flux, input_wavelength):
+    """
+    Converts flux from the erg/cm^2/s/A form to the photon/cm^2/s/A form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of erg/cm^2/s/A.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstrom.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units photon/cm^2/s/A.
+    """
     # [Y photon/cm^2/s/A] = 5.03411250E+07 * [X1 erg/cm^2/s/A] * [X2 A]
     constant = 5.03411250E+07
     return constant * input_flux * input_wavelength
 
 
 def photon_cmsquared_second_angstrom2erg_cmsquared_second_angstrom(input_flux, input_wavelength):
+    """
+    Converts flux from the photon/cm^2/s/A form to the erg/cm^2/s/A form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of photon/cm^2/s/A.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstrom.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units erg/cm^2/s/A.
+    """
     constant = 5.03411250E+07
     return input_flux / input_wavelength / constant
 
 
 def watt_metersquared_hertz2jansky(input_flux):
+    """
+    Converts flux from the W/m^2/Hz form to the Jy form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2/Hz.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Jy.
+    """
     # [Y Jy] = 1.0E+26 * [X W/m^2/Hz]
     constant = 1e26
     return constant * input_flux
 
 
 def jansky2watt_metersquared_hertz(input_flux):
+    """
+    Converts flux from the Jy form to the W/m^2/Hz form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Jy.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2/Hz.
+    """
     constant = 1e26
     return input_flux / constant
 
 
 def erg_cmsquared_second_hertz2jansky(input_flux):
+    """
+    Converts flux from the erg/cm^2/s/Hz form to the Jy form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of erg/cm^2/s/Hz.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Jy.
+    """
     # [Y Jy] = 1.0E+23 * [X erg/cm^2/s/Hz]
     constant = 1e23
     return input_flux * constant
 
 
 def jansky2erg_cmsquared_second_hertz(input_flux):
+    """
+    Converts flux from the Jy form to the erg/cm^2/s/Hz form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Jy.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units erg/cm^2/s/Hz.
+    """
     constant = 1e23
     return input_flux / constant
 
 
 def erg_cmsquared_second_angstrom2jansky(input_flux, input_wavelength):
+    """
+    Converts flux from the erg/cm^2/s/A form to the Jy form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of erg/cm^2/s/A.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstrom.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Jy.
+    """
     # [Y Jy] = 3.33564095E+04 * [X1 erg/cm^2/s/A] * [X2 A]^2
     constant = 3.33564095e4
     return constant * input_flux * input_wavelength**2
 
 
 def jansky2erg_cmsquared_second_angstrom(input_flux, input_wavelength):
+    """
+    Converts flux from the Jy form to the erg/cm^2/s/A form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Jy.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstrom.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units erg/cm^2/s/A.
+    """
     constant = 3.33564095e4
     return input_flux / input_wavelength**2 / constant
 
 
 def watt_metersquared_micron2jansky(input_flux, input_wavelength):
-    # [Y erg/cm^2/s/A] = 2.99792458E-05 * [X1 Jy] / [X2 A]^2
-    constant = 3.33564095e4
-    return  input_flux * input_wavelength**2 / constant
+    """
+    Converts flux from the W/m^2/um form to the Jy form.
 
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of W/m^2/um.
 
-def jansky2watt_metersquared_micron(input_flux, input_wavelength):
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Jy.
+    """
+    # constant = 3.33564095e3
+    # return constant * input_flux * input_wavelength**2
     fnu = watt_metersquared_micron2watt_metersquared_hertz(input_flux, input_wavelength)
     return watt_metersquared_hertz2jansky(fnu)
 
 
+def jansky2watt_metersquared_micron(input_flux, input_wavelength):
+    """
+    Converts flux from the Jy form to the W/m^2/um form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Jy.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of um.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units W/m^2/um.
+    """
+    fnu = jansky2watt_metersquared_hertz(input_flux)
+    return watt_metersquared_hertz2watt_metersquared_micron(fnu,input_wavelength)
+
 def jansky2photon_cmsquared_second_angstrom(input_flux, input_wavelength):
+    """
+    Converts flux from the Jy form to the photon/cm^2/s/A form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Jy.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstrom.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units photon/cm^2/s/A.
+    """
     # [Y photon/cm^2/s/A] = 1.50918896E+03 * [X1 Jy] / [X2 A]
     constant = 1.50918896e3
     return constant * input_flux / input_wavelength
 
 
 def photon_cmsquared_second_angstrom2jansky(input_flux, input_wavelength):
+    """
+    Converts flux from the photon/cm^2/s/A form to the Jy form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of photon/cm^2/s/A.
+
+    input_wavelength : `astropy.units.Quantity`
+        Wavelength in units of Angstrom.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Jy.
+    """
     constant = 1.50918896e03
     return input_flux * input_wavelength / constant
 
 
 def rayleigh2photon_cmsquared_second_angstrom_steradian(input_flux):
+    """
+    Converts surface brightness from the Rayleigh form to the photon/cm^2/s/A/sr form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Rayleigh.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units photon/cm^2/s/A/sr.
+    """
     # [Y photon/cm^2/s/A/sr] = 7.9577539E+04 [X Rayleigh]
     constant = 7.9577539e4
     return constant * input_flux
 
 
 def photon_cmsquared_second_angstrom_steradian2rayleigh(input_flux):
+    """
+    Converts surface brightness from the photon/cm^2/s/A/sr form to the Rayleigh form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of photon/cm^2/s/A/sr.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Rayleigh.
+    """
     constant = 7.9577539e4
     return input_flux / constant
 
 
-def rayleigh2photon_cmsquared_angstrom_degreesquared(input_flux):
+def rayleigh2photon_cmsquared_second_angstrom_degreesquared(input_flux):
+    """
+    Converts surface brightness from the Rayleigh form to the photon/cm^2/s/A/deg^2 form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Rayleigh.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units photon/cm^2/s/A/deg^2.
+    """
     # [Y photon/cm^2/s/A/deg^2] = 2.4240705E+01 [X Rayleigh]
     constant = 2.4240705e01
     return constant * input_flux
 
 
-def photon_cmsquared_angstrom_degreesquared2rayleigh(input_flux):
+def photon_cmsquared_second_angstrom_degreesquared2rayleigh(input_flux):
+    """
+    Converts surface brightness from the photon/cm^2/s/A/deg^2 form to the Rayleigh form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of photon/cm^2/s/A/deg^2.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Rayleigh.
+    """
     constant = 2.4240705e01
     return input_flux / constant
 
 
 def rayleigh2photon_cmsquared_second_angstrom_arcsecondsquared(input_flux):
+    """
+    Converts surface brightness from the Rayleigh form to the photon/cm^2/s/A/arcsec^2 form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of Rayleigh.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units photon/cm^2/s/A/arcsec^2.
+    """
     # [Y photon/cm^2/s/A/arcsec^2] = 1.8704247E-06 [X Rayleigh]
-    constant = 1.8704247e6
+    constant = 1.8704247e-6
     return constant * input_flux
 
 
 def photon_cmsquared_second_angstrom_arcsecondsquared2rayleigh(input_flux):
-    constant = 1.8704247e6
+    """
+    Converts surface brightness from the photon/cm^2/s/A/arcsec^2 form to the Rayleigh form.
+
+    Parameters:
+    -----------
+    input_flux : `astropy.units.Quantity`
+        Flux in units of photon/cm^2/s/A/arcsec^2.
+
+    Returns:
+    --------
+    `astropy.units.Quantity`
+        The converted flux in units Rayleigh.
+    """
+    constant = 1.8704247e-6
     return constant / input_flux
